@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<evenements>
+    <conference>
+        <id>c0988c51-0128-4b2c-a2d6-0021c2ff73ba</id>
+        <nom>Conférence Spring Boot</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>50</capaciteMax>
+        <theme>Architecture REST</theme>
+        <intervenants>M. Tchouamou</intervenants>
+        <intervenants>Mme. Kamdem</intervenants>
+    </conference>
+    <conference>
+        <id>607e432c-c9a7-4bdb-9b2a-32f0a926fdbd</id>
+        <nom>Conférence Spring Boot</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>50</capaciteMax>
+        <theme>Architecture REST</theme>
+        <intervenants>Dr. Tchouamou</intervenants>
+        <intervenants>Mme. Kamdem</intervenants>
+    </conference>
+    <conference>
+        <id>f9700355-ca61-4ceb-8e0e-18bdbf815a66</id>
+        <nom>Conférence XML</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>100</capaciteMax>
+        <theme>Interopérabilité des formats</theme>
+        <intervenants>M. Kengne</intervenants>
+        <intervenants>Mme. Fotso</intervenants>
+    </conference>
+    <conference>
+        <id>596a7cc0-8928-440f-82a0-a81c3919b691</id>
+        <nom>Conférence XML</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>100</capaciteMax>
+        <theme>Interopérabilité des formats</theme>
+        <intervenants>M. Kengne</intervenants>
+        <intervenants>Mme. Fotso</intervenants>
+    </conference>
+    <conference>
+        <id>1b0984bc-2b7d-4e4f-b045-6030c4210164</id>
+        <nom>Conférence Spring Boot</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>100</capaciteMax>
+        <theme>Architecture REST</theme>
+        <intervenants>M. Tchouamou</intervenants>
+        <intervenants>Mme. Kamdem</intervenants>
+    </conference>
+    <conference>
+        <id>4acf4cd2-0fa0-4c03-b548-a8973db4f0c4</id>
+        <nom>Conférence Spring Boot</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>100</capaciteMax>
+        <theme>Architecture REST</theme>
+        <intervenants>M. Tchouamou</intervenants>
+        <intervenants>Mme. Kamdem</intervenants>
+    </conference>
+    <conference>
+        <id>731d7888-785d-41e0-a18b-f1832460ad3f</id>
+        <nom>Conférence Spring Boot</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>100</capaciteMax>
+        <theme>Architecture REST</theme>
+        <intervenants>M. Tchouamou</intervenants>
+        <intervenants>Mme. Kamdem</intervenants>
+    </conference>
+    <conference>
+        <id>a7d547f3-78b4-427e-b55f-472b3274546d</id>
+        <nom>Conférence Spring Boot</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>100</capaciteMax>
+        <theme>Architecture REST</theme>
+        <intervenants>M. Tchouamou</intervenants>
+        <intervenants>Mme. Kamdem</intervenants>
+    </conference>
+    <conference>
+        <id>527a9af1-c235-47df-b436-4429ba1a2090</id>
+        <nom>Conférence Spring Boot</nom>
+        <date/>
+        <lieu>ENSPY</lieu>
+        <capaciteMax>100</capaciteMax>
+        <theme>Architecture REST</theme>
+        <intervenants>M. Tchouamou</intervenants>
+        <intervenants>Mme. Kamdem</intervenants>
+    </conference>
+    <conference>
+        <id>b636d105-cc31-4ba2-9a6d-e0658ff96513</id>
+        <nom>ssss</nom>
+        <date/>
+        <lieu>sss</lieu>
+        <capaciteMax>2</capaciteMax>
+        <theme>cssddsc</theme>
+        <intervenants>csddcd</intervenants>
+    </conference>
+    <conference>
+        <id>f9331464-df24-4fb9-9d5a-c439d62aeb7b</id>
+        <nom>aaaaa</nom>
+        <date/>
+        <lieu>aaaa</lieu>
+        <capaciteMax>2</capaciteMax>
+        <theme>aaaaa</theme>
+        <intervenants></intervenants>
+    </conference>
+</evenements>
