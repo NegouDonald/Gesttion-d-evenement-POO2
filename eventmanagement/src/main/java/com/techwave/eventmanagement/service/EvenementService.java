@@ -48,6 +48,7 @@ public class EvenementService {
 
     // Rechercher un événement par ID
     public Optional<Evenement> getEvenementById(String id) {
+
         return evenementRepository.findById(id);
     }
 
@@ -68,9 +69,22 @@ public class EvenementService {
             throw new CapaciteMaxAtteinteException("❌ La capacité maximale de l’événement est atteinte !");
         }
 
+        // 🔧 Enregistre le participant avant de l'ajouter
+        participant = participantRepository.save(participant);
+
         evenement.ajouterParticipant(participant); // ajoute dans la liste
         evenement.ajouterObservateur(participant); // pour l'observer
 
+        return evenementRepository.save(evenement);
+    }
+    public Evenement desinscrireParticipant(String evenementId, String participantId) {
+        Evenement evenement = evenementRepository.findById(evenementId)
+                .orElseThrow(() -> new RuntimeException("Événement non trouvé"));
+
+        Participant participant = participantRepository.findById(participantId)
+                .orElseThrow(() -> new RuntimeException("Participant non trouvé"));
+
+        evenement.getParticipants().removeIf(p -> p.getId().equals(participantId));
         return evenementRepository.save(evenement);
     }
 

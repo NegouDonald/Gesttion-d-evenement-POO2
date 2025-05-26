@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import InscriptionModal from "../components/InscriptionModal";
+import ParticipantList from "../components/ParticipantList";
 
 export default function EventList() {
   const [events, setEvents] = useState([]);
@@ -74,8 +75,9 @@ export default function EventList() {
                   {event.type === "concert" ? "🎶 Concert" : "🎓 Conférence"}
                 </span>
                 <p className="text-sm text-gray-700 mt-1">
-                  📅 {event.date} — 📍 {event.lieu} — 👥 {event.capaciteMax} places
+                  📅 {event.date} — 📍 {event.lieu} — 👥 {event.participants.length} inscrit{event.participants.length > 1 ? "s" : ""} / {event.capaciteMax} max
                 </p>
+
                 {event.type === "conference" && (
                   <>
                     <p><strong>Thème :</strong> {event.theme}</p>
@@ -88,6 +90,16 @@ export default function EventList() {
                     <p><strong>Genre :</strong> {event.genreMusical}</p>
                   </>
                 )}
+
+                {/* 👥 Liste des participants */}
+                <div className="mt-3">
+                  <h4 className="font-semibold text-sm">👥 Participants :</h4>
+                  <ParticipantList
+                    participants={event.participants}
+                    eventId={event.id}
+                    onUpdate={fetchEvents}
+                  />
+                </div>
               </div>
 
               <div className="flex flex-col items-end gap-2">

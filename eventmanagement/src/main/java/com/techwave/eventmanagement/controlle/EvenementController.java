@@ -52,4 +52,12 @@ public class EvenementController {
             @RequestBody Participant participant) {
         return evenementService.inscrireParticipant(id, participant);
     }
+    @DeleteMapping("/{eventId}/desinscrire/{participantId}")
+    public Evenement desinscrireParticipant(
+            @PathVariable String eventId,
+            @PathVariable String participantId
+    ) {
+        return evenementService.desinscrireParticipant(eventId, participantId);
+    }
+
 }
