@@ -1,8 +1,9 @@
 package com.techwave.eventmanagement.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import com.techwave.eventmanagement.observer.ParticipantObserver;
+import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.GenericGenerator;
 
 import java.util.UUID;
 
@@ -11,11 +12,19 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class Participant {
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "dtype")
+public class Participant implements ParticipantObserver {
 
     @Id
-    private String id = UUID.randomUUID().toString();
+    @GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid2")
+    private String id ;
 
     private String nom;
     private String email;
+    @Override
+    public void recevoirNotification(String message) {
+        System.out.println("🔔 Notification pour " + nom + " : " + message);
+    }
 }

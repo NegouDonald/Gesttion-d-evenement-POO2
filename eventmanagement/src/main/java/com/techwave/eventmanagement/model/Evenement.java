@@ -4,6 +4,7 @@ package com.techwave.eventmanagement.model;
 
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.techwave.eventmanagement.observer.EvenementObservable;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import jakarta.xml.bind.annotation.XmlAccessType;
@@ -36,7 +37,8 @@ import java.util.UUID;
 @Inheritance(strategy = InheritanceType.JOINED)
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlSeeAlso({Conference.class, Concert.class})
-public abstract class Evenement {
+
+public abstract class Evenement extends EvenementObservable {
 
     @Id
     private String id = UUID.randomUUID().toString();
@@ -47,8 +49,9 @@ public abstract class Evenement {
     private String lieu;
     private int capaciteMax;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
     private List<Participant> participants = new ArrayList<>();
+
 
     public void ajouterParticipant(Participant participant) {
         if (participants.size() >= capaciteMax) {
@@ -57,9 +60,12 @@ public abstract class Evenement {
         participants.add(participant);
     }
 
+
+
     public void annuler() {
         System.out.println("Événement annulé : " + nom);
     }
+
 
     public abstract void afficherDetails();
 }
