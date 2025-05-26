@@ -82,6 +82,18 @@ export default function EventForm({ selectedEvent, onSuccess }) {
           {message}
         </div>
       )}
+<div>
+  <label className="block mb-1 font-medium">Type d’événement :</label>
+  <select
+    name="type"
+    value={formData.type}
+    onChange={handleChange}
+    className="w-full border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+  >
+    <option value="conference">🎓 Conférence</option>
+    <option value="concert">🎶 Concert</option>
+  </select>
+</div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <input
@@ -116,6 +128,42 @@ export default function EventForm({ selectedEvent, onSuccess }) {
           required
           className="border p-3 rounded-md"
         />
+        {formData.type === "conference" && (
+  <>
+    <input
+      name="theme"
+      placeholder="Thème de la conférence"
+      onChange={handleChange}
+      className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+
+    <input
+      name="intervenants"
+      placeholder="Intervenants (séparés par virgules)"
+      onChange={handleChange}
+      className="border border-gray-300 p-3 rounded-md col-span-1 md:col-span-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </>
+)}
+
+{formData.type === "concert" && (
+  <>
+    <input
+      name="artiste"
+      placeholder="Nom de l'artiste"
+      onChange={handleChange}
+      className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+
+    <input
+      name="genreMusical"
+      placeholder="Genre musical"
+      onChange={handleChange}
+      className="border border-gray-300 p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+    />
+  </>
+)}
+
         {formData.type === "conference" && (
           <>
             <input
