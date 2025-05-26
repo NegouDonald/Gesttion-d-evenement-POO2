@@ -1,7 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 
-export default function EventForm() {
+export default function EventForm({ selectedEvent, onSuccess }) {
   const [formData, setFormData] = useState({
     type: "conference",
     nom: "",
@@ -12,35 +12,138 @@ export default function EventForm() {
     intervenants: ""
   });
 
-  const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+  const [message, setMessage] = useState(null);
+  const [isSuccess, setIsSuccess] = useState(true);
+  const [isEditing, setIsEditing] = useState(false);
 
-  const handleSubmit = (e) => {
+  // Charger les données si on est en mode édition
+  useEffect(() => {
+    if (selectedEvent) {
+      setFormData({
+        ...selectedEvent,
+        intervenants: selectedEvent.intervenants?.join(", ") || "",
+        date: selectedEvent.date?.slice(0, 16) || "", // format pour datetime-local
+      });
+      setIsEditing(true);
+    }
+  }, [selectedEvent]);
+
+  const handleChange = (e) =>
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const data = {
       ...formData,
       capaciteMax: parseInt(formData.capaciteMax),
-      intervenants: formData.intervenants.split(",").map(i => i.trim())
+      intervenants: formData.intervenants
+        ? formData.intervenants.split(",").map((i) => i.trim())
+        : [],
     };
 
-    axios.post("http://localhost:8080/api/evenements", data)
-      .then(() => alert("✅ Événement ajouté avec succès !"))
-      .catch(err => console.error("Erreur :", err));
+    try {
+      if (isEditing) {
+        await axios.put(
+          `http://localhost:8080/api/evenements/${selectedEvent.id}`,
+          data
+        );
+        setMessage("✅ Événement modifié avec succès !");
+      } else {
+        await axios.post("http://localhost:8080/api/evenements", data);
+        setMessage("✅ Événement ajouté avec succès !");
+      }
+      setIsSuccess(true);
+      onSuccess && onSuccess(); // callback parent
+    } catch (error) {
+      const msg =
+        error.response?.data?.message || "❌ Erreur lors de l’enregistrement";
+      setMessage(msg);
+      setIsSuccess(false);
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
-      <h2 className="text-xl font-semibold">Ajouter un événement</h2>
-      <div className="grid grid-cols-2 gap-4">
-        <input name="nom" placeholder="Nom" onChange={handleChange} required className="input" />
-        <input name="date" type="datetime-local" onChange={handleChange} required className="input" />
-        <input name="lieu" placeholder="Lieu" onChange={handleChange} required className="input" />
-        <input name="capaciteMax" type="number" onChange={handleChange} required className="input" />
-        <input name="theme" placeholder="Thème" onChange={handleChange} className="input" />
-        <input name="intervenants" placeholder="Intervenants (séparés par ,)" onChange={handleChange} className="input col-span-2" />
+    <form
+      onSubmit={handleSubmit}
+      className="space-y-6 p-6 bg-white shadow-md rounded-lg"
+    >
+      <h2 className="text-2xl font-bold text-gray-800">
+        {isEditing ? "✏️ Modifier un événement" : "➕ Ajouter un événement"}
+      </h2>
+
+      {message && (
+        <div
+          className={`text-sm px-4 py-2 rounded ${
+            isSuccess
+              ? "bg-green-100 text-green-800"
+              : "bg-red-100 text-red-700"
+          }`}
+        >
+          {message}
+        </div>
+      )}
+
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <input
+          name="nom"
+          placeholder="Nom"
+          value={formData.nom}
+          onChange={handleChange}
+          required
+          className="border p-3 rounded-md"
+        />
+        <input
+          name="date"
+          type="datetime-local"
+          value={formData.date}
+          onChange={handleChange}
+          required
+          className="border p-3 rounded-md"
+        />
+        <input
+          name="lieu"
+          placeholder="Lieu"
+          value={formData.lieu}
+          onChange={handleChange}
+          required
+          className="border p-3 rounded-md"
+        />
+        <input
+          name="capaciteMax"
+          type="number"
+          value={formData.capaciteMax}
+          onChange={handleChange}
+          required
+          className="border p-3 rounded-md"
+        />
+        {formData.type === "conference" && (
+          <>
+            <input
+              name="theme"
+              placeholder="Thème"
+              value={formData.theme}
+              onChange={handleChange}
+              className="border p-3 rounded-md"
+            />
+            <input
+              name="intervenants"
+              placeholder="Intervenants (séparés par virgules)"
+              value={formData.intervenants}
+              onChange={handleChange}
+              className="border p-3 rounded-md md:col-span-2"
+            />
+          </>
+        )}
       </div>
-      <button type="submit" className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
-        ➕ Soumettre
-      </button>
+
+      <div className="flex justify-end">
+        <button
+          type="submit"
+          className="bg-blue-600 text-white px-6 py-3 rounded hover:bg-blue-700"
+        >
+          {isEditing ? "✅ Modifier" : "➕ Ajouter"}
+        </button>
+      </div>
     </form>
   );
 }

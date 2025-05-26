@@ -60,4 +60,15 @@ public class EvenementController {
         return evenementService.desinscrireParticipant(eventId, participantId);
     }
 
+    @GetMapping("/search")
+    public List<Evenement> rechercherEvenement(@RequestParam("q") String query) {
+        return evenementService.rechercherParNom(query);
+    }
+    // Modifier un événement existant
+    @PutMapping("/{id}")
+    public Evenement modifierEvenement(@PathVariable String id, @RequestBody Evenement evenementModifie) {
+        return evenementService.modifierEvenement(id, evenementModifie);
+    }
+
+
 }

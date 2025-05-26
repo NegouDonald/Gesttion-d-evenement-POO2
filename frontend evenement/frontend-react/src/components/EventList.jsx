@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import InscriptionModal from "../components/InscriptionModal";
 import ParticipantList from "../components/ParticipantList";
+import EditEventModal from "../components/EditEventModal";
+
 
 export default function EventList() {
   const [events, setEvents] = useState([]);
@@ -9,6 +11,10 @@ export default function EventList() {
   const [message, setMessage] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [selectedEventId, setSelectedEventId] = useState(null);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [editModalOpen, setEditModalOpen] = useState(false);
+const [eventToEdit, setEventToEdit] = useState(null);
+
 
   useEffect(() => {
     fetchEvents();
@@ -16,8 +22,19 @@ export default function EventList() {
 
   const fetchEvents = () => {
     axios.get("http://localhost:8080/api/evenements")
-      .then(response => setEvents(response.data))
-      .catch(error => console.error("Erreur chargement événements", error));
+      .then((res) => setEvents(res.data))
+      .catch(() => setMessage("❌ Erreur de chargement"));
+  };
+
+  const searchEvents = () => {
+    if (searchTerm.trim() === "") {
+      fetchEvents();
+      return;
+    }
+
+    axios.get(`http://localhost:8080/api/evenements/search?q=${searchTerm}`)
+      .then(res => setEvents(res.data))
+      .catch(() => setMessage("❌ Aucun événement trouvé"));
   };
 
   const handleDelete = (id) => {
@@ -42,11 +59,31 @@ export default function EventList() {
 
   return (
     <div className="p-4">
-      <h2 className="text-xl font-bold mb-2">🎫 Événements</h2>
+      <h2 className="text-xl font-bold mb-4">🎫 Événements</h2>
 
       {message && (
         <div className="mb-3 text-sm px-4 py-2 rounded bg-green-100 text-green-800">{message}</div>
       )}
+
+      {/* 🔍 Recherche */}
+      <div className="mb-4 flex gap-2">
+        <input
+          type="text"
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") searchEvents();
+          }}
+          placeholder="🔍 Rechercher par nom..."
+          className="px-3 py-1 border rounded w-full"
+        />
+        <button
+          onClick={searchEvents}
+          className="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 text-sm"
+        >
+          Rechercher
+        </button>
+      </div>
 
       {/* Filtres */}
       <div className="flex items-center gap-2 mb-4">
@@ -115,6 +152,16 @@ export default function EventList() {
                 >
                   🗑️ Supprimer
                 </button>
+                <button
+  onClick={() => {
+    setEventToEdit(event);
+    setEditModalOpen(true);
+  }}
+  className="bg-yellow-100 text-yellow-800 px-3 py-1 rounded hover:bg-yellow-200 text-sm"
+>
+  ✏️ Modifier
+</button>
+
               </div>
             </div>
           </li>
@@ -131,6 +178,17 @@ export default function EventList() {
           fetchEvents();
         }}
       />
+
+<EditEventModal
+  show={editModalOpen}
+  onClose={() => setEditModalOpen(false)}
+  event={eventToEdit}
+  onSuccess={(msg) => {
+    setMessage(msg);
+    fetchEvents();
+  }}
+/>
+
     </div>
   );
 }
